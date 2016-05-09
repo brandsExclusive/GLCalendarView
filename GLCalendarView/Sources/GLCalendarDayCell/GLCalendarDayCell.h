@@ -30,6 +30,8 @@ typedef NS_ENUM(NSInteger, RANGE_DISPLAY_MODE) {
 @property (nonatomic, strong) UIColor *evenMonthBackgroundColor UI_APPEARANCE_SELECTOR;
 @property (nonatomic, strong) UIColor *oddMonthBackgroundColor UI_APPEARANCE_SELECTOR;
 @property (nonatomic, strong) NSDictionary *dayLabelAttributes UI_APPEARANCE_SELECTOR;
+@property (nonatomic, strong) NSDictionary *dayLabelNotAvailableAttributes UI_APPEARANCE_SELECTOR;
+@property (nonatomic, strong) NSDictionary *dayLabelSurchargeAttributes UI_APPEARANCE_SELECTOR;
 @property (nonatomic, strong) NSDictionary *futureDayLabelAttributes UI_APPEARANCE_SELECTOR;
 @property (nonatomic, strong) NSDictionary *todayLabelAttributes UI_APPEARANCE_SELECTOR;
 @property (nonatomic, strong) NSDictionary *monthLabelAttributes UI_APPEARANCE_SELECTOR;
@@ -44,6 +46,9 @@ typedef NS_ENUM(NSInteger, RANGE_DISPLAY_MODE) {
 
 @property (nonatomic, readonly) NSDate *date;
 @property (nonatomic, weak, readonly) GLCalendarDateRange *range;
+
+//flags a surcharge
+@property (nonatomic, strong) NSNumber *surcharge;
 
 - (void)setDate:(NSDate *)date range:(GLCalendarDateRange *)range cellPosition:(CELL_POSITION)cellPosition enlargePoint:(ENLARGE_POINT)enlargePoint;
 @end

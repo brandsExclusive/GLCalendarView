@@ -122,6 +122,12 @@
         [self setTodayLabelText:[NSString stringWithFormat:@"%ld", (long)day]];
         self.backgroundCover.isToday = YES;
         self.backgroundCover.fillColor = self.todayBackgroundColor;
+    } else if (self.surcharge.boolValue == YES) {
+      self.monthLabel.textColor = [UIColor redColor];
+      [self setMonthLabelText:@"Surcharge"];
+      self.dayLabel.textColor = [UIColor redColor];
+      [self setDayLabelText:[NSString stringWithFormat:@"%ld", (long)day]];
+      self.backgroundCover.isToday = NO;
     } else if (day == 1) {
         self.monthLabel.textColor = [UIColor redColor];
         [self setMonthLabelText:[self monthText:month]];

@@ -247,8 +247,30 @@ static NSString * const CELL_REUSE_IDENTIFIER = @"DayCell";
     } else {
         enlargePoint = ENLARGE_NONE;
     }
-    [cell setDate:date range:[self selectedRangeForDate:date] cellPosition:cellPosition enlargePoint:enlargePoint];
-    
+    //if not in a range
+    GLCalendarDateRange *range = [self selectedRangeForDate:date];
+    cell.surcharge = @NO;
+    if(range == nil){
+      //if date is not available use that text style
+      if([self.availableDates containsObject:date] == NO){
+        cell.dayLabelAttributes = [GLCalendarDayCell appearance].dayLabelNotAvailableAttributes;
+      }
+      else if([self.surchargeDates containsObject:date] == YES){
+        cell.dayLabelAttributes = [GLCalendarDayCell appearance].dayLabelSurchargeAttributes;
+        cell.surcharge = @YES;
+      }
+      else{
+        cell.dayLabelAttributes = [GLCalendarDayCell appearance].dayLabelAttributes;
+      }
+
+    }
+    else{
+      cell.dayLabelAttributes=[GLCalendarDayCell appearance].dayLabelAttributes;
+    }
+    //use the same style for future days
+    cell.futureDayLabelAttributes = cell.dayLabelAttributes;
+    [cell setDate:date range:range cellPosition:cellPosition enlargePoint:enlargePoint];
+  
     return cell;
 }
 
