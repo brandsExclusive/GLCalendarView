@@ -27,6 +27,7 @@ typedef NS_ENUM(NSInteger, RANGE_POSITION) {
 @property (nonatomic) CGFloat borderWidth;
 @property (nonatomic) BOOL inEdit;
 @property (nonatomic) BOOL isToday;
+@property (nonatomic) BOOL highlightAvailable;
 @property (nonatomic) BOOL continuousRangeDisplay;
 @property (nonatomic) CGFloat pointSize;
 @property (nonatomic) CGFloat pointScale;

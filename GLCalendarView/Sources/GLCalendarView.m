@@ -15,6 +15,7 @@ static NSString * const CELL_REUSE_IDENTIFIER = @"DayCell";
 
 #define DEFAULT_PADDING 6;
 #define DEFAULT_ROW_HEIGHT 54;
+#define USESTRIKETHOUGH 0 // 0 || 1
 
 @interface GLCalendarView()<UICollectionViewDataSource, UICollectionViewDelegate, UIScrollViewDelegate, UIGestureRecognizerDelegate>
 @property (nonatomic, readwrite) NSCalendar *calendar;
@@ -251,26 +252,35 @@ static NSString * const CELL_REUSE_IDENTIFIER = @"DayCell";
     GLCalendarDateRange *range = [self selectedRangeForDate:date];
     cell.surcharge = @NO;
     if(range == nil){
-      //if date is not available use that text style
-      if([self.availableDates containsObject:date] == NO){
-        cell.dayLabelAttributes = [GLCalendarDayCell appearance].dayLabelNotAvailableAttributes;
-      }
-      else if([self.surchargeDates containsObject:date] == YES){
-        cell.dayLabelAttributes = [GLCalendarDayCell appearance].dayLabelSurchargeAttributes;
-        cell.surcharge = @YES;
-      }
-      else{
-        cell.dayLabelAttributes = [GLCalendarDayCell appearance].dayLabelAttributes;
-      }
-
+        //if date is not available use that text style
+        if([self.availableDates containsObject:date] == NO){
+            cell.dayLabelAttributes = [GLCalendarDayCell appearance].dayLabelNotAvailableAttributes;
+            cell.highlightAvailable = NO;
+            if (USESTRIKETHOUGH && [date compare:[NSDate date]] == NSOrderedDescending) {
+                [cell.layer addSublayer:[self getDiagonalLineShape]];
+            }
+        }
+        else if([self.surchargeDates containsObject:date] == YES){
+            cell.highlightAvailable = YES;
+            cell.dayLabelAttributes = [GLCalendarDayCell appearance].dayLabelSurchargeAttributes;
+            cell.surcharge = @YES;
+        }
+        else{
+            cell.dayLabelAttributes = [GLCalendarDayCell appearance].dayLabelAttributes;
+            if ( [self.availableDates containsObject:date] == YES) {
+                cell.highlightAvailable = YES;
+            }
+        }
     }
     else{
-      cell.dayLabelAttributes=[GLCalendarDayCell appearance].dayLabelAttributes;
+        cell.dayLabelAttributes=[GLCalendarDayCell appearance].dayLabelAttributes;
     }
+    
+    
     //use the same style for future days
     cell.futureDayLabelAttributes = cell.dayLabelAttributes;
     [cell setDate:date range:range cellPosition:cellPosition enlargePoint:enlargePoint];
-  
+    
     return cell;
 }
 
@@ -608,5 +618,19 @@ static NSDate *today;
 - (NSIndexPath *)indexPathForDate:(NSDate *)date
 {
     return [NSIndexPath indexPathForItem:[GLDateUtils daysBetween:self.firstDate and:date] inSection:0];
+}
+
+-(CAShapeLayer*) getDiagonalLineShape{
+    UIBezierPath *path = [UIBezierPath bezierPath];
+    [path moveToPoint:CGPointMake(17.0, 17.0)];
+    [path addLineToPoint:CGPointMake(37.0, 37.0)];
+    
+    CAShapeLayer *shapeLayer = [CAShapeLayer layer];
+    shapeLayer.path = [path CGPath];
+    shapeLayer.strokeColor = [[UIColor lightGrayColor] CGColor];
+    shapeLayer.lineWidth = 2.0;
+    shapeLayer.fillColor = [[UIColor clearColor] CGColor];
+    
+    return shapeLayer;
 }
 @end

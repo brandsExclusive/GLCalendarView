@@ -49,6 +49,8 @@ typedef NS_ENUM(NSInteger, RANGE_DISPLAY_MODE) {
 
 //flags a surcharge
 @property (nonatomic, strong) NSNumber *surcharge;
+// flag an unavailable date
+@property (nonatomic, assign) BOOL highlightAvailable;
 
 - (void)setDate:(NSDate *)date range:(GLCalendarDateRange *)range cellPosition:(CELL_POSITION)cellPosition enlargePoint:(ENLARGE_POINT)enlargePoint;
 @end

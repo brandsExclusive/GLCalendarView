@@ -128,7 +128,8 @@
       self.dayLabel.textColor = [UIColor redColor];
       [self setDayLabelText:[NSString stringWithFormat:@"%ld", (long)day]];
       self.backgroundCover.isToday = NO;
-    } else if (day == 1) {
+    }
+    else if (day == 1) {
         self.monthLabel.textColor = [UIColor redColor];
         [self setMonthLabelText:[self monthText:month]];
         self.dayLabel.textColor = [UIColor redColor];
@@ -188,13 +189,14 @@
         [self.backgroundCover enlargeBeginPoint:NO];
         [self.backgroundCover enlargeEndPoint:NO];
     }
+    // highlight available days
+    self.backgroundCover.highlightAvailable = self.highlightAvailable;
 }
 
 - (void)setDayLabelText:(NSString *)text
 {
     self.dayLabel.attributedText = [[NSAttributedString alloc] initWithString:text attributes:self.dayLabelAttributes];
 }
-
 - (void)setFutureDayLabelText:(NSString *)text
 {
     self.dayLabel.attributedText = [[NSAttributedString alloc] initWithString:text attributes:self.futureDayLabelAttributes];

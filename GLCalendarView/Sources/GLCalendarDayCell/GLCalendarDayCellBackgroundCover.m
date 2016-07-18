@@ -34,6 +34,7 @@
 @interface GLCalendarDayCellBackgroundCover()
 @property (nonatomic, strong) GLCalendarRangePoint *beginPoint;
 @property (nonatomic, strong) GLCalendarRangePoint *endPoint;
+@property (nonatomic, strong) UIBezierPath *circle;
 @end
 @implementation GLCalendarDayCellBackgroundCover
 
@@ -111,10 +112,11 @@
 
 - (void)drawSelectedCover:(CGRect)rect
 {
-    if (self.rangePosition == RANGE_POSITION_NONE) {
+    
+    if (self.rangePosition == RANGE_POSITION_NONE && self.highlightAvailable == NO) {
         return;
     }
-    
+
     CGFloat paddingLeft = self.paddingLeft;
     CGFloat paddingRight = self.paddingRight;
     CGFloat paddingTop = self.paddingTop;
@@ -128,6 +130,22 @@
     CGFloat midY = CGRectGetMidY(rect);
     
     UIBezierPath *path = [UIBezierPath bezierPath];
+    
+    if (self.highlightAvailable = YES) {
+        self.circle = [UIBezierPath bezierPath];
+        self.circle = [UIBezierPath bezierPathWithOvalInRect: CGRectMake(borderWidth + paddingLeft, borderWidth + paddingTop, width - borderWidth * 2 - paddingLeft - paddingRight,  height - borderWidth * 2 - paddingTop * 2)];
+        [self.circle closePath];
+        [self.circle stroke];
+        UIColor *color = self.fillColor;
+        self.fillColor = [UIColor colorWithWhite:0.95 alpha:1];
+        [self.fillColor setFill];
+        [self.circle fill];
+        self.fillColor = color;
+        if (self.rangePosition == RANGE_POSITION_NONE){
+            return;
+        }
+    }
+    
     if (!self.inEdit && !self.continuousRangeDisplay) {
         CGRect rect = CGRectMake(borderWidth + paddingLeft, borderWidth + paddingTop, width - borderWidth * 2 - paddingLeft - paddingRight,  height - borderWidth * 2 - paddingTop * 2);
         if (self.backgroundImage) {
@@ -140,7 +158,6 @@
         [path fill];
         return;
     }
-    
     if (self.rangePosition == RANGE_POSITION_BEGIN) {
         [path moveToPoint:CGPointMake(radius + borderWidth + paddingLeft, paddingTop + borderWidth)];
         [path addArcWithCenter:CGPointMake(radius + borderWidth + paddingLeft, midY) radius:radius startAngle: - M_PI / 2 endAngle: M_PI / 2 clockwise:NO];
